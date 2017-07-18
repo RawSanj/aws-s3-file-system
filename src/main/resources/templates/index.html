@@ -1,0 +1,152 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>AWS S3 - FIle System</title>
+    <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/paper/bootstrap.min.css"></link>
+    <link rel="stylesheet" href="main.css"></link>
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"></link>
+</head>
+
+<body>
+
+<nav class="navbar navbar-inverse">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/"><strong>AWS S3 -</strong> File System</a>
+    </div>
+
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
+      <form class="navbar-form navbar-right" role="search">
+        <div class="form-group">
+          <input type="text" class="form-control" placeholder="Search"></input>
+        </div>
+        <button type="submit" class="btn btn-default">Submit</button>
+      </form>
+    </div>
+  </div>
+</nav>
+
+
+<br></br>
+
+<div class="container-fluid content-body">
+	<div class="row">
+	<div class="col-md-10 col-md-offset-1 bs-component">
+			
+		<table class="table table-bordered table-condensed table-hover">
+		    <thead>
+		    <tr class="danger">
+		        <th width="5%">#</th>
+		        <th>File Path and File Name</th>
+		        <th width="20%">
+		        	Action 
+		        	<!-- Button trigger modal -->
+					<button type="button" class="btn btn-info pull-right" data-toggle="modal" data-target="#myModal">
+					  	Upload File
+					</button> 
+		        </th>
+		    </tr>
+		    </thead>
+		    <tbody>
+		    <tr th:each="file, iter: ${files}" th:classappend="${ iter.index % 2 == 0} ? info : warning">
+		        <td th:text="${iter.index + 1}">#</td>
+		        
+		        <td>		        	
+		        	<ul class="breadcrumb rm-margin-chg-color">
+					  <!--  <li><a href="#">Home</a></li> To do. Add Links for search files in bucket later -->
+					  <li th:each="f, it : ${file.value}" th:text="${f}" th:classappend="${ it.index+1 == it.size} ? black">Data</li>
+					</ul>
+		        </td>
+		        
+		        <td>		        	
+		        	<div class="btn-group btn-group-justified">
+		        		<a th:href="${'/download?filename=' + file.key}" th:text="Download" class="btn btn-success" style="width:47%"></a>
+		        		<a href="" class="btn btn-default disabled"  style="width:6%"></a>
+		        		<a th:href="${'/delete?filename=' + file.key}" th:text="Delete" class="btn btn-danger"  style="width:47%"></a>
+					</div>
+		        	
+		        </td>
+		    </tr>
+		    </tbody>
+		</table>
+		
+	</div>
+	</div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">File Upload</h4>
+      </div>
+      <div class="modal-body">
+      	<form class="form-horizontal" method="POST" enctype="multipart/form-data" action="/save">
+		    
+		    <div class="form-group">
+		    	<div class="col-md-8 col-md-offset-4">
+		    		<span class="btn btn-info fileinput-button">
+	               		<i class="glyphicon glyphicon-plus"></i>
+	                 	<span>Choose File to Upload</span>
+	                 	<input type="file" name="file"></input>
+	               </span>
+		    	</div>
+		    </div>
+		    
+		    <div class="form-group">
+		      <label class="col-md-3 control-label">S3 Directory Path:</label>
+		      <div class="col-md-8">
+		        <input type="text" class="form-control" name="path"></input>
+		      </div>
+		    </div>
+		    <div class="form-group">
+		      <label class="col-md-3 control-label">File Name:</label>
+		      <div class="col-md-8">
+		        <input type="text" class="form-control" name="fileName"></input>
+		      </div>
+		    </div>
+		    <div class="form-group">
+		      <div class="pull-right col-md-6 col-md-offset-6">
+					<button type="reset" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        			<button type="submit" class="btn btn-success">Upload</button>
+		      </div>
+		    </div>
+		</form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="navbar navbar-default navbar-fixed-bottom footer">
+	<div class="container-fluid">
+		<span class="navbar-text pull-left">
+			© 2017. Sanjay Rawat
+			<a target="_blank" href="https://stackoverflow.com/users/5702727/sanjay-rawat?tab=profile" class="navbar-btn btn-warning btn btn-md">
+	      		<i class="fa fa-stack-overflow fa-2x" aria-hidden="true"></i>
+	 		</a>
+    	</span>	
+		<span class="navbar-text pull-right">
+      		Follow me on 
+      		<a target="_blank" href="https://twitter.com/rawsanj31" class="navbar-btn btn-primary btn btn-md">
+	      		<i class="fa fa-twitter fa-2x" aria-hidden="true"></i>
+	 		</a>
+	 		<a target="_blank" href="https://github.com/RawSanj" class="navbar-btn btn-default btn btn-md">
+	      		<i class="fa fa-github fa-2x" aria-hidden="true"></i>
+	 		</a>
+      	</span>
+    </div>
+</div>
+
+
+
+<script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</body>
+</html>

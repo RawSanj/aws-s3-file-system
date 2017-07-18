@@ -1,0 +1,55 @@
+body {
+    font-family: "Roboto", Verdana, Arial, sans-serif;
+    color: #333;
+    margin-bottom: 105px;
+}
+ 	 	
+.fileinput-button {
+    position: relative;
+    overflow: hidden;
+    display: inline-block;
+}
+
+.fileinput-button input {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 0;
+    opacity: 0;
+    -ms-filter: 'alpha(opacity=0)';
+    font-size: 200px !important;
+    direction: ltr;
+    cursor: pointer;
+}
+
+.content-body {
+	margin-bottom: 60px;
+}
+
+.rm-margin-chg-color {
+	margin: 0px;
+	background-color: #e2f2ff;
+	border-color: #6fbbf7;
+	border-style: solid;
+	border-width: 1px;
+	color: #a61bbd;
+}
+
+.table{
+	border-color: rgba(0,0,0,0.1);
+	border-style: solid;
+	border-width: 2px;
+}
+
+.footer {
+    background-color: #E3F2FD;
+}
+
+.footer span{
+	font-size: 18px;
+	color: #000000 !important;
+}
+
+.black {
+	color: rgba(0,0,0,0.7);
+}
