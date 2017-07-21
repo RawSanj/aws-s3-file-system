@@ -1,13 +1,11 @@
 package com.rawsanj.aws.controller;
 
-import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
-import org.springframework.core.io.WritableResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import com.rawsanj.aws.service.S3OperationService;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.util.List;
 
 /**
@@ -95,6 +92,17 @@ public class S3FIleOpsRestController {
         return ResponseEntity
                 .accepted()
                 .body("File Stored Successfully!");
+    }
+    
+    @GetMapping(path = "/search")
+    public ResponseEntity<List<String>> searchS3Files(@RequestParam String pattern) throws IOException {
+
+        List<String> filesInS3Bucket = s3OperationService.searchFile(pattern);
+        logger.info("Number of Files in S3 bucket: {}", filesInS3Bucket.size());
+
+        return ResponseEntity
+                .ok()
+                .body(filesInS3Bucket);
     }
 
 }

@@ -55,8 +55,9 @@ public class S3OperationService {
         resources.forEach(f-> {
             filesInS3Bucket.add(f.getFilename());
         });
-        Collections.sort(filesInS3Bucket);
-
+                
+        Collections.sort(filesInS3Bucket);    
+        
         return filesInS3Bucket;
     }
     
@@ -85,5 +86,19 @@ public class S3OperationService {
     	amazonS3.deleteObject(bucket, file);
 
 	}
+        
+    public List<String> searchFile(String pattern) throws IOException {
+        String bucketPath = "s3://" + bucket + "/";
+        Resource[] allFilesInFolder =  resourcePatternResolver.getResources(bucketPath + pattern);
+        List<Resource> resources = Arrays.asList(allFilesInFolder);
+        List<String> filesInS3Bucket = new ArrayList<>();
+
+        resources.forEach(f-> {
+            filesInS3Bucket.add(f.getFilename());
+        });                
+        Collections.sort(filesInS3Bucket);
+ 
+        return filesInS3Bucket;
+    }
 
 }

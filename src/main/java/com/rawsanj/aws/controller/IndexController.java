@@ -15,13 +15,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import com.rawsanj.aws.service.S3OperationService;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -46,16 +46,22 @@ public class IndexController {
     }
 
     @GetMapping("/")
-    public String listUploadedFiles(Model model) throws IOException {
+    public String listUploadedFiles(Model model) {
 
-        model.addAttribute("files", s3OperationService.getAllFiles()
-                .stream()
-                .collect(Collectors.toMap(f-> f, f -> {
-                	List<String> filesNFolders = new ArrayList<>();
-                	String[] folders = f.split("/");
-                	Arrays.asList(folders).forEach(filesNFolders::add);
-                	return filesNFolders;
-                })));
+        try {
+        	logger.info("Fetching all Files from S3");
+			model.addAttribute("files", s3OperationService.getAllFiles()
+			        .stream()
+			        .collect(Collectors.toMap(f-> f, f -> {
+			        	List<String> filesNFolders = new ArrayList<>();
+			        	String[] folders = f.split("/");
+			        	Arrays.asList(folders).forEach(filesNFolders::add);
+			        	return filesNFolders;
+			        })));
+		} catch(IOException e) {
+			logger.error("Failed to Connect to AWS S3 - Please check your AWS Keys");
+			e.printStackTrace();
+		}
 
         return "index";
     }
@@ -98,6 +104,27 @@ public class IndexController {
         s3OperationService.deleteFile(filename);
 
         return "redirect:/";
+    }
+    
+    @PostMapping("/search")
+    public String searchFiles(@RequestParam String pattern, Model model) {
+    	
+    	try {
+        	logger.info("Fetching Files from S3 for Pattern: {}", pattern);
+			model.addAttribute("files", s3OperationService.searchFile(pattern)
+			        .stream()
+			        .collect(Collectors.toMap(f-> f, f -> {
+			        	List<String> filesNFolders = new ArrayList<>();
+			        	String[] folders = f.split("/");
+			        	Arrays.asList(folders).forEach(filesNFolders::add);
+			        	return filesNFolders;
+			        })));
+		} catch(IOException e) {
+			logger.error("Failed to Connect to AWS S3 - Please check your AWS Keys");
+			e.printStackTrace();
+		}
+
+        return "index";
     }
 
 }
