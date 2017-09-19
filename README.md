@@ -37,6 +37,50 @@ $ mvn clean package
 $ mvn spring-boot:run
 ```
 
+
+### Run in Docker
+
+#### Build and run locally in Docker:
+
+Build the WAR file:
+```sh
+$ mvn clean package
+```
+
+Build docker image:
+```sh
+$ mvn docker:build
+```
+
+Run docker image by passing credentials in Environment variables:
+```sh
+$ docker run -d -p 8080:8080 \
+$ -e cloud.aws.credentials.accessKey=ACCESS_KEY \
+$ -e cloud.aws.credentials.secretKey=SECRET_KEY \
+$ -e cloud.aws.region.static=REGION \
+$ -e aws.bucket.name=BUCKET_NAME \
+$ rawsanj/aws-s3-file-system
+```
+
+Or Run docker image by updating the env.list file with AWS Credentials: 
+```sh
+$ docker run -d -p 8080:8080 --env-file env.list rawsanj/aws-s3-file-system
+```
+
+#### Run on Cloud:
+
+Try http://play-with-docker.com for running docker on browser without any local setup.
+
+Run the docker image available in Docker Hub:
+```sh
+$ docker run -d -p 8080:8080 \
+$ -e cloud.aws.credentials.accessKey=ACCESS_KEY \
+$ -e cloud.aws.credentials.secretKey=SECRET_KEY \
+$ -e cloud.aws.region.static=REGION \
+$ -e aws.bucket.name=BUCKET_NAME \
+$ rawsanj/aws-s3-file-system
+```
+
 ### Tools
 
 The following tools are used to create this project :
