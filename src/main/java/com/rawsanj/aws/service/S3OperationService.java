@@ -9,6 +9,8 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.core.io.WritableResource;
 import org.springframework.core.io.support.ResourcePatternResolver;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -84,7 +86,6 @@ public class S3OperationService {
     
     public void deleteFile(String file) {
     	amazonS3.deleteObject(bucket, file);
-
 	}
         
     public List<String> searchFile(String pattern) throws IOException {
@@ -99,6 +100,22 @@ public class S3OperationService {
         Collections.sort(filesInS3Bucket);
  
         return filesInS3Bucket;
+    }
+
+    public ResponseEntity<Resource> downloadFile(String filename){
+
+        String bucketPath = "s3://" + bucket + "/";
+        Resource s3Resource = resourceLoader.getResource(bucketPath + filename);
+
+        String s3FileName = filename.substring(filename.lastIndexOf("/"));
+        s3FileName = s3FileName.replace("/", "");
+
+        logger.info("Downloading File: {} from S3", s3FileName);
+        return ResponseEntity
+                .ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\""+s3FileName+"\"")
+                .body(s3Resource);
+
     }
 
 }

@@ -49,18 +49,7 @@ public class S3FIleOpsRestController {
 
     @GetMapping("/download")
     public ResponseEntity<Resource> serveFile(@RequestParam String filename) {
-
-        String bucketPath = "s3://" + bucket + "/";
-        Resource s3Resource = resourceLoader.getResource(bucketPath + filename);
-                
-        String s3FileName = filename.substring(filename.lastIndexOf("/"));
-        s3FileName = s3FileName.replace("/", "");
-                
-        logger.info("Downloading File: {} from S3", s3FileName);
-        return ResponseEntity
-                .ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\""+s3FileName+"\"")
-                .body(s3Resource);
+        return s3OperationService.downloadFile(filename);
     }
     
     @DeleteMapping("/delete")

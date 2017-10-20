@@ -7,12 +7,11 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * Created by @author Sanjay Rawat on 7/7/17.
  */
 
-
 @SpringBootApplication
-public class SssOpsApplication {
+public class S3OperationsApp {
 
 	public static void main(String[] args) {
-		SpringApplication.run(SssOpsApplication.class, args);
+		SpringApplication.run(S3OperationsApp.class, args);
 	}
 
 }

@@ -8,10 +8,24 @@ dependency-reduced-pom.xml
 buildNumber.properties
 .mvn/timing.properties
 
-.idea/*
-
 # Ignore Secret Key File
 src/main/resources/application.secret
 
 # Avoid ignoring Maven wrapper jar file (.jar files are usually ignored)
 !/.mvn/wrapper/maven-wrapper.jar
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+.idea/
+aws-s3-file-system.iml
